@@ -13,7 +13,7 @@ def index(request):
 
 def about(request):
 
-   
+
 
     context_dict = {'existentialmessage': "I don't mean that in a motivational sense, but in an existential one. If you forget your own existence, you won't be able to appreciate this about page."}
     return render(request, 'rango/about.html', context=context_dict)
