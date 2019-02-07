@@ -6,9 +6,10 @@ from rango.models import Page
 from rango.forms import CategoryForm, PageForm
 from rango.forms import UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 
 
@@ -163,7 +164,6 @@ def register(request):
             # Invalid form or forms - mistakes or something else? 
             # Print problems to the terminal. 
             print(user_form.errors, profile_form.errors)
-
     else:
         # Not a HTTP POST, so we render our form using two ModelForm instances. 
         # These forms will be blank, ready for user input. 
@@ -220,9 +220,18 @@ def user_login(request):
         # blank dictionary object... 
         return render(request, 'rango/login.html', {})
 
+
 @login_required 
 def restricted(request): 
     return HttpResponse("Since you're logged in, you can see this text!")
+# Use the login_required() decorator to ensure only those logged in can 
+# access the view. 
+@login_required 
+def user_logout(request): 
+    # Since we know the user is logged in, we can now just log them out. 
+    logout(request) 
+    # Take the user back to the homepage. 
+    return HttpResponseRedirect(reverse('index'))
 
 
 
